@@ -1,27 +1,51 @@
 var audioElt, audioCtx, analyser, source, frequency;
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
+var songIsLoading = false;
+var defaultSongBtn = document.querySelector("#play-default");
+var userSongBtn = document.querySelector("#play-user");
+var userSongInput = document.querySelector("#music-input");
 
-initAudio("assets/sounds/overture.mp3");
-
-function initAudio(file) {
-  if (audioElt === undefined) {
-    audioElt = new Audio();
-    audioCtx = new AudioContext();
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 512;
-    source = audioCtx.createMediaElementSource(audioElt);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-  } else {
-    audioElt.pause();
-  }
-  audioElt.src = file;
+function setupAudioAPI() {
+  audioElt = new Audio();
   audioElt.loop = true;
   audioElt.controls = true;
-  audioElt.autoplay = true;
+  audioElt.autoplay = false;
+  audioElt.preload = "auto";
 
-  audioElt.play();
+  audioCtx = new AudioContext();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 512;
+  source = audioCtx.createMediaElementSource(audioElt);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  defaultSongBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    playAudio("assets/sounds/overture.mp3");
+  });
+
+  userSongBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    userSongInput.click();
+  });
+
+  audioElt.addEventListener("canplaythrough", function() {
+    audioElt.play();
+  });
+
+  userSongInput.addEventListener("change", function() {
+    var file = userSongInput.files[0];
+    if (file !== undefined) {
+      audioElt.pause();
+      audioElt.src = URL.createObjectURL(file);
+    }
+  });
+}
+
+function playAudio(file) {
+  audioElt.pause();
+  audioElt.src = file;
 }
 
 function toggleAudio(audio) {
@@ -29,6 +53,8 @@ function toggleAudio(audio) {
 }
 
 // SETUP
+
+setupAudioAPI();
 
 var scene = new THREE.Scene();
 
@@ -73,7 +99,7 @@ scene.add(starField);
 // BOX
 
 var boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-var cubeMaterials = [
+var boxMaterial = [
     new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/blue.png"), side: THREE.DoubleSide }), // R
     new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/green.png"), side: THREE.DoubleSide }), // L
     new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/white.png"), side: THREE.DoubleSide }), // U
@@ -81,7 +107,6 @@ var cubeMaterials = [
     new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/red.png"), side: THREE.DoubleSide }), // F
     new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/orange.png"), side: THREE.DoubleSide })  // B
 ];
-var boxMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
 var box = new THREE.Mesh(boxGeometry, boxMaterial);
 
 box.callback = function() {
@@ -117,8 +142,10 @@ function render() {
 		}
 	}
 
-  box.rotation.x += 0.05;
-  box.rotation.y += 0.025;
+  if (!songIsLoading) {
+    box.rotation.x += 0.05;
+    box.rotation.y += 0.025;
+  }
 
   // Get current low frequency
   dataArray = new Uint8Array(analyser.frequencyBinCount);

@@ -2,10 +2,23 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>Particles by THREE.js</title>
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
     <body>
+        <div class="left-side">
+          <div class="jukebox">
+            <input type="file" name="music" id="music-input">
+            <div class="song-choice-btn" id="play-default" title="Play default song">♬</div>
+            <div class="song-choice-btn" id="play-user" title="Choose song in Files">📁</div>
+          </div>
+
+          <div class="infos">
+            Click on the cube to play/stop the song.
+          </div>
+        </div>
+
         <script src="assets/js/three.min.js"></script>
         <script src="assets/js/OrbitControls.js"></script>
         <script src="assets/js/main.js"></script>
