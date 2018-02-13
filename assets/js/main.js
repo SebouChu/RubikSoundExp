@@ -74,12 +74,12 @@ scene.add(starField);
 
 var boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 var cubeMaterials = [
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/blue.jpg"), side: THREE.DoubleSide }), // R
+    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/blue.png"), side: THREE.DoubleSide }), // R
     new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/green.png"), side: THREE.DoubleSide }), // L
     new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/white.png"), side: THREE.DoubleSide }), // U
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/yellow.jpg"), side: THREE.DoubleSide }), // D
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/red.jpg"), side: THREE.DoubleSide }), // F
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/orange.jpg"), side: THREE.DoubleSide })  // B
+    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/yellow.png"), side: THREE.DoubleSide }), // D
+    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/red.png"), side: THREE.DoubleSide }), // F
+    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/orange.png"), side: THREE.DoubleSide })  // B
 ];
 var boxMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
 var box = new THREE.Mesh(boxGeometry, boxMaterial);
