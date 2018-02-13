@@ -117,7 +117,7 @@ function render() {
 		}
 	}
 
-  box.rotation.x += 0.025;
+  box.rotation.x += 0.05;
   box.rotation.y += 0.025;
 
   // Get current low frequency
