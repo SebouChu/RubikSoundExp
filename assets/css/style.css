@@ -41,6 +41,7 @@ canvas {
   color: black;
   transition-property: background color border;
   transition-duration: .5s;
+  font-family: "Segoe UI Symbol", sans-serif;
 }
 
 .jukebox .song-choice-btn:hover {
