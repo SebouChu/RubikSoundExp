@@ -68,6 +68,8 @@ renderer.setPixelRatio( window.devicePixelRatio );
 document.body.appendChild(renderer.domElement);
 
 controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enablePan = false;
+controls.enableRotate = false;
 
 window.addEventListener("resize", function() {
   renderer.setSize( window.innerWidth, window.innerHeight );
