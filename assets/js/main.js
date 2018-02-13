@@ -69,7 +69,7 @@ document.body.appendChild(renderer.domElement);
 
 controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-document.addEventListener("resize", function() {
+window.addEventListener("resize", function() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -118,7 +118,7 @@ scene.add(box);
 
 // FOG & LIGHT
 scene.fog = new THREE.FogExp2( 0x000000, 0.0015 );
-var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
 directionalLight.position.z = 5
 scene.add(directionalLight);
 
