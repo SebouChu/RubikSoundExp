@@ -100,14 +100,15 @@ scene.add(starField);
 
 var boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 var boxMaterial = [
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/blue.png"), side: THREE.DoubleSide }), // R
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/green.png"), side: THREE.DoubleSide }), // L
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/white.png"), side: THREE.DoubleSide }), // U
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/yellow.png"), side: THREE.DoubleSide }), // D
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/red.png"), side: THREE.DoubleSide }), // F
-    new THREE.MeshLambertMaterial({ map: new THREE.TextureLoader().load("assets/img/orange.png"), side: THREE.DoubleSide })  // B
+    new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/blue.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") }), // R
+    new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/green.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") }), // L
+    new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/white.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") }), // U
+    new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/yellow.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") }), // D
+    new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/red.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") }), // F
+    new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/orange.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") })  // B
 ];
-var box = new THREE.Mesh(boxGeometry, boxMaterial);
+var test = new THREE.MeshFaceMaterial(boxMaterial);
+var box = new THREE.Mesh(boxGeometry, test);
 
 box.callback = function() {
   toggleAudio(audioElt);
@@ -117,8 +118,9 @@ scene.add(box);
 
 // FOG & LIGHT
 scene.fog = new THREE.FogExp2( 0x000000, 0.0015 );
-var ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
-scene.add(ambientLight);
+var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.z = 5
+scene.add(directionalLight);
 
 // ANIMATE
 
