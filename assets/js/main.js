@@ -134,8 +134,7 @@ var boxMaterial = [
     new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/red.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") }), // F
     new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load("assets/img/orange.png"), side: THREE.DoubleSide, bumpMap: new THREE.TextureLoader().load("assets/img/white.png") })  // B
 ];
-var test = new THREE.MeshFaceMaterial(boxMaterial);
-var box = new THREE.Mesh(boxGeometry, test);
+var box = new THREE.Mesh(boxGeometry, boxMaterial);
 
 box.callback = function() {
   toggleAudio(audioElt);
