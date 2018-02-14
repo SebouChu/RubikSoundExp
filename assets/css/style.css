@@ -52,6 +52,16 @@ canvas {
   border: 1px solid white;
 }
 
+.jukebox .song-choice-btn svg {
+  fill: black;
+  transition-property: fill;
+  transition-duration: .5s;
+}
+
+.jukebox .song-choice-btn:hover svg {
+  fill: white;
+}
+
 .jukebox .audio-name-container {
   display: inline-block;
   width: 20em;
