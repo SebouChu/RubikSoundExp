@@ -1,10 +1,12 @@
 var audioElt, audioCtx, analyser, source, frequency;
+var audioName = "Nothing playing...";
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var songIsLoading = false;
 var defaultSongBtn = document.querySelector("#play-default");
 var userSongBtn = document.querySelector("#play-user");
 var userSongInput = document.querySelector("#music-input");
+var audioNameElt = document.querySelector("#audio-name");
 
 function setupAudioAPI() {
   audioElt = new Audio();
@@ -22,7 +24,8 @@ function setupAudioAPI() {
 
   defaultSongBtn.addEventListener("click", function(e) {
     e.preventDefault();
-    playAudio("assets/sounds/overture.mp3");
+    updateAudioName("AJR - Overture");
+    playAudio("assets/sounds/AJR - Overture.mp3");
   });
 
   userSongBtn.addEventListener("click", function(e) {
@@ -36,16 +39,38 @@ function setupAudioAPI() {
 
   userSongInput.addEventListener("change", function() {
     var file = userSongInput.files[0];
+    console.log(file);
+    if (!file.type.match(/^audio/)) {
+      showError("Not an audio file", 2000);
+      return;
+    }
+    var fileName = file.name.substring(0, file.name.lastIndexOf("."));
+    updateAudioName(fileName);
     if (file !== undefined) {
-      audioElt.pause();
-      audioElt.src = URL.createObjectURL(file);
+      playAudio(URL.createObjectURL(file));
     }
   });
 }
 
-function playAudio(file) {
+function showError(message = "Error", duration = 1000) {
+  audioNameElt.classList.add("error");
+  audioNameElt.innerHTML = message;
+  setTimeout(function() {
+    audioNameElt.innerHTML = audioName;
+    audioNameElt.classList.remove("error");
+  }, duration);
+}
+
+function updateAudioName(newAudioName) {
+  console.log(newAudioName);
+  audioName = newAudioName;
+  audioNameElt.innerHTML = audioName;
+
+}
+
+function playAudio(filepath) {
   audioElt.pause();
-  audioElt.src = file;
+  audioElt.src = filepath;
 }
 
 function toggleAudio(audio) {
@@ -147,7 +172,7 @@ function render() {
 	}
 
   if (!songIsLoading) {
-    box.rotation.x += 0.05;
+    box.rotation.x += 0.04;
     box.rotation.y += 0.025;
   }
 
