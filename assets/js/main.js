@@ -40,7 +40,7 @@ function setupAudioAPI() {
   userSongInput.addEventListener("change", function() {
     var file = userSongInput.files[0];
     console.log(file);
-    if (!file.type.match(/^audio/) || file.type == "") {
+    if (!file.type.match(/^audio/) && file.type != "") {
       showError("Not an audio file", 2000);
       return;
     }
