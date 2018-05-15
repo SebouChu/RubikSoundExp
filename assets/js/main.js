@@ -46,13 +46,15 @@ audioElt.autoplay = false;
 audioElt.preload = "auto";
 
 // Set up audio context with source & analyser
-audioCtx = new AudioContext();
-analyser = audioCtx.createAnalyser();
-analyser.fftSize = 512;
-source = audioCtx.createMediaElementSource(audioElt);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
-
+function setupAudioCtx() {
+  if (audioCtx !== undefined) { return; }
+  audioCtx = new AudioContext();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 512;
+  source = audioCtx.createMediaElementSource(audioElt);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+}
 
 ///////////////
 // FUNCTIONS //
@@ -94,6 +96,7 @@ function toggleAudio(audio) {
 // EventListener: Default song
 defaultSongBtn.addEventListener("click", function(e) {
   e.preventDefault();
+  setupAudioCtx();
   updateAudioName("AJR - Overture");
   playAudio("assets/sounds/AJR - Overture.mp3");
 });
@@ -101,6 +104,7 @@ defaultSongBtn.addEventListener("click", function(e) {
 // EventListener: Choose music in Files
 userSongBtn.addEventListener("click", function(e) {
   e.preventDefault();
+  setupAudioCtx();
   userSongInput.click();
 });
 
@@ -253,6 +257,8 @@ cube.callback = function() {
 
 scene.add(cube);
 
+cube.scale.set(0.75, 0.75, 0.75);
+
 
 
 //   ##       ####  ######   ##     ## ######## #### ##    ##  ######
@@ -337,15 +343,16 @@ function render() {
     cube.rotation.x += 0.04;
     cube.rotation.y += 0.025;
   }
+  if (audioCtx !== undefined) {
+    // Get current low frequency
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(dataArray);
+    frequency = dataArray[0];
 
-  // Get current low frequency
-  dataArray = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(dataArray);
-  frequency = dataArray[0];
-
-  // Get new scale for the cube and set it
-  var newScale = frequency/255 + 0.75;
-  cube.scale.set(newScale, newScale, newScale);
+    // Get new scale for the cube and set it
+    var newScale = frequency/255 + 0.75;
+    cube.scale.set(newScale, newScale, newScale);
+  }
 
   // Finally render
   renderer.render(scene, camera);
